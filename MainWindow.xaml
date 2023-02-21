@@ -1,0 +1,170 @@
+﻿<Window x:Class="WindowChromeExample.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WindowChromeExample"
+        mc:Ignorable="d"
+        Title="DnoNotes" Height="300" Width="500" MinHeight="200" MinWidth="500"
+        DataContext="{Binding RelativeSource={RelativeSource self}}">
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="30" />
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CaptionButtonStyle" TargetType="Button">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Grid x:Name="LayoutRoot" Background="Transparent" Width="44" Height="30">
+                                <TextBlock x:Name="txt" Text="{TemplateBinding Content}" FontFamily="Segoe MDL2 Assets" FontSize="10" 
+                                   Foreground="Violet" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                   RenderOptions.ClearTypeHint="Auto" TextOptions.TextRenderingMode="Aliased"  TextOptions.TextFormattingMode="Display"/>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="LayoutRoot" Property="Background" Value="Black"/>
+                                    <Setter TargetName="txt" Property="Foreground" Value="Violet"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style x:Key="MinimizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+                <Setter Property="Content" Value="&#xE949;"/>
+            </Style>
+
+            <Style x:Key="MaximizeButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+                <Setter Property="Content" Value="&#xE739;"/>
+            </Style>
+
+            <Style x:Key="RestoreButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+                <Setter Property="Content" Value="&#xE923;"/>
+            </Style>
+
+            <Style x:Key="CloseButtonStyle" TargetType="Button" BasedOn="{StaticResource CaptionButtonStyle}">
+                <Setter Property="Content" Value="&#xE106;"/>
+            </Style>
+
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="{x:Static SystemCommands.CloseWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Close" />
+        <CommandBinding Command="{x:Static SystemCommands.MaximizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Maximize" />
+        <CommandBinding Command="{x:Static SystemCommands.MinimizeWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Minimize" />
+        <CommandBinding Command="{x:Static SystemCommands.RestoreWindowCommand}" CanExecute="CommandBinding_CanExecute" Executed="CommandBinding_Executed_Restore" />
+    </Window.CommandBindings>
+
+    <Border x:Name="MainWindowBorder" BorderBrush="Violet" BorderThickness="0" >
+        <Grid x:Name="parentContainer" Background="Black">
+            <Grid.RowDefinitions>
+                <RowDefinition Height ="Auto"/>
+                <RowDefinition Height ="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" Height="30" Background="Black">
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <TextBlock Text="DnoNotes 2.1" FontFamily="Century Gothic"   FontSize="20" Foreground="Violet" Width="153" HorizontalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" >
+                    <Button Style="{StaticResource MinimizeButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Minimize"
+                            Command="{x:Static SystemCommands.MinimizeWindowCommand}"/>
+                    <Button x:Name="RestoreButton" Visibility="Collapsed" Style="{StaticResource RestoreButtonStyle}" 
+                            Command="{x:Static SystemCommands.RestoreWindowCommand}" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Restore"/>
+                    <Button x:Name="MaximizeButton" Visibility="Visible" Style="{StaticResource MaximizeButtonStyle}" 
+                            Command="{x:Static SystemCommands.MaximizeWindowCommand}" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Maximize" />
+                    <Button Style="{StaticResource CloseButtonStyle}" WindowChrome.IsHitTestVisibleInChrome="True" ToolTip="Close"
+                            Command="{x:Static SystemCommands.CloseWindowCommand}"/>
+                </StackPanel>
+            </Grid>
+
+            <Grid Grid.Row="1" x:Name="AppArea">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="6*"/>
+                    <RowDefinition Height="35"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="5*"/>
+                </Grid.ColumnDefinitions>
+                <TextBox x:Name="NameTextBox" BorderThickness="0" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="1" TextWrapping="Wrap" Text="Введите имя новой заметки или выберите существующую" Height="40" Margin="1,0,10,0" Background="Black" BorderBrush="#00000000" SelectionBrush="Violet" FontFamily="Century Gothic" FontSize="16" Foreground="Violet" FontWeight="Bold" CaretBrush="Violet" VerticalAlignment="Top"/>
+                <TextBox x:Name="NoteFieldTextBox" BorderThickness="0" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Text="Выберите дату заметки, для сохранения нажмите кнопку, для удаления нажмите кнопку" VerticalAlignment="Stretch" Margin="1,6,10,6" Background="Black" BorderBrush="#00000000" SelectionBrush="Violet" SelectionTextBrush="Violet" FontFamily="Century Gothic" Foreground="Violet" CaretBrush="Violet" FontSize="14"/>
+
+
+
+                <DatePicker BorderThickness="0" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Stretch" Background="Black" Foreground="Violet" FontFamily="Century Gothic">
+
+                    <DatePicker.Style>
+
+                        <Style TargetType="{x:Type DatePicker}">
+                            <Style.Resources>
+                                <Style TargetType="DatePickerTextBox">
+                                    <Setter Property="Background" Value="Black"/>
+                                    <Setter Property="BorderBrush" Value="Black"/>
+                                    <Setter Property="Foreground" Value="Black"/>
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Style>
+                                <Style TargetType="DatePicker">
+                                    <Setter Property="BorderThickness" Value="0"/>
+                                </Style>
+                            </Style.Resources>
+
+                            <Style.Triggers>
+                                <!-- your triggers here -->
+                            </Style.Triggers>
+                        </Style>
+                    </DatePicker.Style>
+
+                    <DatePicker.BorderBrush>
+                        <LinearGradientBrush EndPoint="0.5,0" StartPoint="0.5,1">
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="Black"/>
+                            <GradientStop Color="Transparent"/>
+                        </LinearGradientBrush>
+                    </DatePicker.BorderBrush>
+                </DatePicker>
+
+
+
+
+                <Button Width="100" x:Name="Save" Grid.Row="2" Grid.Column="1" Content="Сохранить" FontFamily="Century Gothic" HorizontalAlignment="Stretch" Background="Black" Margin="1,6,240,6" VerticalAlignment="Stretch" BorderBrush="Violet" Foreground="Violet" FontWeight="Bold" FontSize="14" Click="Save_Click">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button x:Name="Create" Width="100" Grid.Row="2" Grid.Column="1" Content="Создать" FontFamily="Century Gothic" HorizontalAlignment="Stretch" Background="Black" Margin="110,6,120,6" VerticalAlignment="Stretch" BorderBrush="Violet" Foreground="Violet" FontWeight="Bold" FontSize="14" Click="Create_Click">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <ListBox x:Name="NotesListBox" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0" Background="Black" Foreground="Violet" BorderBrush="#00000000" Margin="4,5,1,1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" SelectionChanged="NotesListBox_SelectionChanged"/>
+
+                <Button x:Name="Delete" Width="100" Grid.Row="2" Grid.Column="1" Content="Удалить" FontFamily="Century Gothic" HorizontalAlignment="Stretch" Background="Black" Margin="235,6,20,6" VerticalAlignment="Stretch" BorderBrush="Violet" Foreground="Violet" FontWeight="Bold" FontSize="14" Click="Delete_Click">
+
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="3"/>
+                        </Style>
+                    </Button.Resources>
+
+                </Button>
+
+            </Grid>
+            <Grid/>
+        </Grid>
+    </Border>
+</Window>
+
