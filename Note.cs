@@ -1,52 +1,50 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Shapes;
-using System.Xml.Serialization;
 using Newtonsoft.Json;
+using WindowChromeExample;
 
 namespace dno_tes_2._1
 {
     public class Note
     {
-        public static string jsonpath = "C:/Program Files/DnoNotes/notedata.json";
+        public static string jsonpath = "D:/Program Files/DnoNotes/notedata.json";
 
-        public string NoteName;
-        public string NoteText;
-        public DateTime NoteDate;
-
-        public Note(string noteName, string noteText, DateTime noteDate)
+        public string name;
+        public string text;
+        public string date;
+        public Note(string NoteName, string NoteText, string NoteDate)
         {
-            NoteName = noteName;
-            NoteText = noteText;
-            NoteDate = noteDate;
+            this.name = NoteName;
+            this.text = NoteText;
+            this.date = NoteDate;
         }
 
         static public void SaveToFile<T>(T list, string path)
         {
-            if (!File.Exists(jsonpath + path))
+            if (!System.IO.File.Exists(jsonpath))
             {
-                FileStream fileStream = File.Create(jsonpath);
+                Directory.CreateDirectory("D:/Program Files/DnoNotes/");
+                FileStream fileStream = System.IO.File.Create(jsonpath);
                 fileStream.Dispose();
             }
 
             string json = JsonConvert.SerializeObject(list);
-            File.WriteAllText(jsonpath, json);
+            System.IO.File.WriteAllText(jsonpath, json);
         }
 
         static public List<T> ReadFromFile<T>(string path)
         {
             List<T> result;
-            if (!File.Exists(jsonpath))
+
+            if (!System.IO.File.Exists(jsonpath))
             {
-                FileStream fileStream = File.Create(jsonpath);
+                Directory.CreateDirectory("D:/Program Files/DnoNotes/");
+                FileStream fileStream = System.IO.File.Create(jsonpath);
                 fileStream.Dispose();
             }
 
-            string resultInfo = File.ReadAllText(jsonpath);
+            string resultInfo = System.IO.File.ReadAllText(jsonpath);
             result = JsonConvert.DeserializeObject<List<T>>(resultInfo);
 
             return result;

@@ -96,7 +96,7 @@
 
 
 
-                <DatePicker BorderThickness="0" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Stretch" Background="Black" Foreground="Violet" FontFamily="Century Gothic">
+                <DatePicker x:Name="dtpckr" BorderThickness="0" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Margin="10,0,10,0" VerticalAlignment="Stretch" Background="Black" Foreground="Violet" FontFamily="Century Gothic" SelectedDateChanged="DatePicker_SelectedDateChanged">
 
                     <DatePicker.Style>
 
@@ -150,7 +150,8 @@
                     </Button.Resources>
                 </Button>
 
-                <ListBox x:Name="NotesListBox" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0" Background="Black" Foreground="Violet" BorderBrush="#00000000" Margin="4,5,1,1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding}" SelectionChanged="NotesListBox_SelectionChanged"/>
+                <ListBox x:Name="NotesListBox" BorderThickness="0" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" Grid.Row="1" Grid.Column="0" Background="Black" Foreground="Violet" BorderBrush="#00000000" Margin="4,5,10,1" IsSynchronizedWithCurrentItem="True" ItemsSource="{Binding Name}" SelectionChanged="NotesListBox_SelectionChanged">
+                </ListBox>
 
                 <Button x:Name="Delete" Width="100" Grid.Row="2" Grid.Column="1" Content="Удалить" FontFamily="Century Gothic" HorizontalAlignment="Stretch" Background="Black" Margin="235,6,20,6" VerticalAlignment="Stretch" BorderBrush="Violet" Foreground="Violet" FontWeight="Bold" FontSize="14" Click="Delete_Click">
 
